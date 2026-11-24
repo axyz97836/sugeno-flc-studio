@@ -11,17 +11,17 @@ export const presets = [
       {
         name: 'Food Quality', short: 'Food', range: [0, 10], defaultValue: 4, unit: '/10',
         membershipFunctions: [
-          { name: 'Poor', type: 'trapezoidal', params: [0, 0, 2, 5], color: 'var(--color-curve-red)' },
-          { name: 'Average', type: 'triangular', params: [2, 5, 8], color: 'var(--color-curve-amber)' },
-          { name: 'Good', type: 'trapezoidal', params: [5, 8, 10, 10], color: 'var(--color-curve-green)' },
+          { name: 'Poor', type: 'trapezoidal', params: [0, 0, 2, 5] },
+          { name: 'Average', type: 'triangular', params: [2, 5, 8] },
+          { name: 'Good', type: 'trapezoidal', params: [5, 8, 10, 10] },
         ],
       },
       {
         name: 'Service Quality', short: 'Service', range: [0, 10], defaultValue: 7, unit: '/10',
         membershipFunctions: [
-          { name: 'Poor', type: 'trapezoidal', params: [0, 0, 2, 5], color: 'var(--color-curve-red)' },
-          { name: 'Average', type: 'triangular', params: [2, 5, 8], color: 'var(--color-curve-amber)' },
-          { name: 'Excellent', type: 'trapezoidal', params: [5, 8, 10, 10], color: 'var(--color-curve-green)' },
+          { name: 'Poor', type: 'trapezoidal', params: [0, 0, 2, 5] },
+          { name: 'Average', type: 'triangular', params: [2, 5, 8] },
+          { name: 'Excellent', type: 'trapezoidal', params: [5, 8, 10, 10] },
         ],
       },
     ],
@@ -47,17 +47,17 @@ export const presets = [
       {
         name: 'Temperature Error', short: 'Error', range: [-10, 10], defaultValue: 3, unit: '°C',
         membershipFunctions: [
-          { name: 'Negative', type: 'trapezoidal', params: [-10, -10, -5, 0], color: 'var(--color-curve-blue)' },
-          { name: 'Zero', type: 'triangular', params: [-4, 0, 4], color: 'var(--color-curve-purple)' },
-          { name: 'Positive', type: 'trapezoidal', params: [0, 5, 10, 10], color: 'var(--color-curve-orange)' },
+          { name: 'Negative', type: 'trapezoidal', params: [-10, -10, -5, 0] },
+          { name: 'Zero', type: 'triangular', params: [-4, 0, 4] },
+          { name: 'Positive', type: 'trapezoidal', params: [0, 5, 10, 10] },
         ],
       },
       {
         name: 'Error Rate', short: 'Rate', range: [-5, 5], defaultValue: 1, unit: '°C/s',
         membershipFunctions: [
-          { name: 'Falling', type: 'trapezoidal', params: [-5, -5, -2, 0], color: 'var(--color-curve-blue)' },
-          { name: 'Steady', type: 'triangular', params: [-2, 0, 2], color: 'var(--color-curve-purple)' },
-          { name: 'Rising', type: 'trapezoidal', params: [0, 2, 5, 5], color: 'var(--color-curve-orange)' },
+          { name: 'Falling', type: 'trapezoidal', params: [-5, -5, -2, 0] },
+          { name: 'Steady', type: 'triangular', params: [-2, 0, 2] },
+          { name: 'Rising', type: 'trapezoidal', params: [0, 2, 5, 5] },
         ],
       },
     ],
@@ -83,17 +83,17 @@ export const presets = [
       {
         name: 'Dirtiness', short: 'Dirt', range: [0, 10], defaultValue: 6, unit: '/10',
         membershipFunctions: [
-          { name: 'Low', type: 'trapezoidal', params: [0, 0, 2, 5], color: 'var(--color-curve-green)' },
-          { name: 'Medium', type: 'triangular', params: [2, 5, 8], color: 'var(--color-curve-amber)' },
-          { name: 'High', type: 'trapezoidal', params: [5, 8, 10, 10], color: 'var(--color-curve-red)' },
+          { name: 'Low', type: 'trapezoidal', params: [0, 0, 2, 5] },
+          { name: 'Medium', type: 'triangular', params: [2, 5, 8] },
+          { name: 'High', type: 'trapezoidal', params: [5, 8, 10, 10] },
         ],
       },
       {
         name: 'Grease Level', short: 'Grease', range: [0, 10], defaultValue: 4, unit: '/10',
         membershipFunctions: [
-          { name: 'Low', type: 'trapezoidal', params: [0, 0, 2, 5], color: 'var(--color-curve-green)' },
-          { name: 'Medium', type: 'triangular', params: [2, 5, 8], color: 'var(--color-curve-amber)' },
-          { name: 'High', type: 'trapezoidal', params: [5, 8, 10, 10], color: 'var(--color-curve-red)' },
+          { name: 'Low', type: 'trapezoidal', params: [0, 0, 2, 5] },
+          { name: 'Medium', type: 'triangular', params: [2, 5, 8] },
+          { name: 'High', type: 'trapezoidal', params: [5, 8, 10, 10] },
         ],
       },
     ],

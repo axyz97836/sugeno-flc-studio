@@ -289,8 +289,9 @@ export default function App() {
                                 }`}
                               >
                                 <div
-                                  className="text-xs font-semibold"
-                                  style={{ color: f.degree > 0 ? f.color : 'var(--color-muted)' }}
+                                  className={`text-xs font-semibold ${
+                                    f.degree > 0 ? 'text-accent' : 'text-muted'
+                                  }`}
                                 >
                                   μ_{f.name}
                                 </div>

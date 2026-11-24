@@ -85,8 +85,9 @@ export default function InputPanel({ preset, inputs, onInputChange, presets, onP
                       }`}
                     >
                       <div
-                        className="text-xs font-medium truncate"
-                        style={{ color: isActive ? mf.color : 'var(--color-muted)' }}
+                        className={`text-xs font-medium truncate ${
+                          isActive ? 'text-accent' : 'text-muted'
+                        }`}
                       >
                         {mf.name}
                       </div>

@@ -26,7 +26,9 @@ export default function MembershipChart({
     }
     const d = pts.map(([x, y], j) => `${j ? 'L' : 'M'}${x.toFixed(1)},${y.toFixed(1)}`).join(' ');
     const lx = mf.type === 'triangular' ? mf.params[1] : (mf.params[1] + mf.params[2]) / 2;
-    return { mf, d, lx, i };
+    const degree = fuzzified?.[i]?.degree ?? (inputValue != null ? evaluateMF(inputValue, mf) : 0);
+    const isActive = degree > 0.0001;
+    return { mf, d, lx, i, degree, isActive };
   });
 
   const step = (hi - lo) <= 10 ? 2 : (hi - lo) <= 20 ? 5 : 10;
@@ -114,23 +116,24 @@ export default function MembershipChart({
           strokeWidth="1"
         />
 
-        {/* Membership Function Curves: flat stroke */}
-        {curves.map(({ mf, d, lx, i }) => (
+        {/* Membership Function Curves: active term accent, inactive term ink at 35% */}
+        {curves.map(({ mf, d, lx, i, isActive }) => (
           <g key={i}>
             <path
               d={d}
               fill="none"
-              stroke={mf.color}
-              strokeWidth="2"
+              stroke={isActive ? 'var(--color-accent)' : 'var(--color-ink-inactive)'}
+              strokeWidth={isActive ? '2' : '1.5'}
               strokeLinejoin="round"
             />
+            {/* Direct labels */}
             <text
               x={sx(lx)}
               y={sy(1) - 10}
               textAnchor="middle"
-              fill={mf.color}
+              fill={isActive ? 'var(--color-accent)' : 'var(--color-ink-inactive)'}
               fontSize="12"
-              fontWeight="600"
+              fontWeight={isActive ? '700' : '500'}
               fontFamily="var(--font-sans)"
             >
               {mf.name}
@@ -162,7 +165,7 @@ export default function MembershipChart({
                     cy={yPos}
                     r="4.5"
                     fill="var(--color-ground)"
-                    stroke={variable.membershipFunctions[i]?.color || 'var(--color-accent)'}
+                    stroke="var(--color-accent)"
                     strokeWidth="2"
                   />
                   <rect

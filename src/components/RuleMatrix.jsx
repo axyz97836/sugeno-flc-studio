@@ -26,8 +26,7 @@ export default function RuleMatrix({ preset, evaluatedRules, currentStep }) {
               {m2.map((m, j) => (
                 <th
                   key={j}
-                  className="p-2 text-xs font-semibold text-center"
-                  style={{ color: m.color }}
+                  className="p-2 text-xs font-semibold text-center text-muted"
                 >
                   {m.name}
                 </th>
@@ -38,8 +37,7 @@ export default function RuleMatrix({ preset, evaluatedRules, currentStep }) {
             {m1.map((mf1, i) => (
               <tr key={i}>
                 <td
-                  className="p-2 text-xs font-semibold text-right whitespace-nowrap"
-                  style={{ color: mf1.color }}
+                  className="p-2 text-xs font-semibold text-right whitespace-nowrap text-muted"
                 >
                   {mf1.name}
                 </td>
