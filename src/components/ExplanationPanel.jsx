@@ -1,78 +1,101 @@
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { Icon } from './icons';
 
 export default function ExplanationPanel({ stepInfo, currentStep, handCalc, preset, pipeline }) {
   const [showCalc, setShowCalc] = useState(false);
   const info = stepInfo[currentStep];
 
   return (
-    <div className="flex flex-col h-full">
-      {/* ── Header ── */}
-      <div className="px-4 py-2 text-[9px] uppercase tracking-[0.12em] font-bold"
-        style={{ color: 'var(--text-muted)', borderBottom: '1px solid var(--border)' }}>
-        Explain
-      </div>
+    <div className="flex flex-col h-full bg-ground">
+      {/* Header */}
+      <header className="p-4 border-b border-line">
+        <h2 className="text-xs uppercase tracking-wider font-semibold text-muted">
+          Explanation & Ledger
+        </h2>
+      </header>
 
-      {/* ── Content ── */}
-      <div className="flex-1 overflow-y-auto p-4">
+      {/* Main explanation body */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
         <AnimatePresence mode="wait">
-          <motion.div key={currentStep}
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}>
-
-            <div className="text-[10px] uppercase tracking-wider mb-2" style={{ color: 'var(--text-muted)' }}>
-              Step {currentStep + 1} of {stepInfo.length}
+          <motion.div
+            key={currentStep}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            className="space-y-4"
+          >
+            <div>
+              <div className="text-xs font-mono uppercase tracking-wider text-muted mb-1">
+                Step {currentStep + 1} of {stepInfo.length}
+              </div>
+              <h3 className="text-base font-bold text-ink">{info.title}</h3>
             </div>
 
-            <h3 className="text-base font-bold mb-3" style={{ color: 'var(--text-primary)' }}>{info.title}</h3>
-
-            <p className="text-[12px] leading-[1.7] mb-4" style={{ color: 'var(--text-secondary)' }}>{info.description}</p>
+            <p className="text-xs leading-relaxed text-ink">
+              {info.description}
+            </p>
 
             {info.formula && (
-              <div className="rounded-md p-3 mb-4 font-mono text-[11px]"
-                style={{ background: 'rgba(155,142,196,0.06)', border: '1px solid rgba(155,142,196,0.12)', color: 'var(--purple)' }}>
-                <div className="text-[8px] uppercase tracking-wider mb-1" style={{ color: 'rgba(155,142,196,0.5)' }}>Formula</div>
-                {info.formula}
+              <div className="p-3 rounded-[6px] bg-panel border border-line space-y-1">
+                <div className="text-xs uppercase tracking-wider text-muted">
+                  Governing Equation
+                </div>
+                <div className="text-xs font-mono text-accent leading-relaxed">
+                  {info.formula}
+                </div>
               </div>
             )}
 
             {info.highlight && (
-              <div className="rounded-md p-3 mb-4 text-[11px] leading-relaxed"
-                style={{ background: 'var(--accent-bg)', border: '1px solid rgba(79,184,196,0.12)', color: 'var(--accent)' }}>
-                <div className="text-[8px] uppercase tracking-wider mb-1" style={{ color: 'var(--accent-dim)' }}>💡 Tip</div>
-                {info.highlight}
+              <div className="p-3 rounded-[6px] bg-accent-subtle border border-accent-line space-y-1">
+                <div className="text-xs uppercase tracking-wider font-semibold text-accent">
+                  Controller Behavior
+                </div>
+                <p className="text-xs leading-relaxed text-ink">
+                  {info.highlight}
+                </p>
               </div>
             )}
 
-            {/* Final output */}
+            {/* Final output summary when on Step 4 */}
             {currentStep >= 4 && pipeline && (
-              <div className="rounded-md p-4 mb-4"
-                style={{ background: 'rgba(126,196,155,0.06)', border: '1px solid rgba(126,196,155,0.12)' }}>
-                <div className="text-[8px] uppercase tracking-wider mb-1" style={{ color: 'var(--green)' }}>Final Output</div>
-                <div className="flex items-baseline gap-1.5">
-                  <span className="text-2xl font-bold font-mono" style={{ color: 'var(--green)' }}>
+              <div className="p-4 rounded-[6px] bg-panel border border-line space-y-1">
+                <div className="text-xs uppercase tracking-wider text-muted">
+                  Controller Output
+                </div>
+                <div className="flex items-baseline gap-2 font-mono tabular-nums">
+                  <span className="text-xl font-bold text-accent">
                     {pipeline.result.output.toFixed(2)}
                   </span>
-                  <span className="text-sm" style={{ color: 'var(--text-muted)' }}>{preset.output.unit}</span>
+                  <span className="text-xs text-ink">{preset.output.unit}</span>
                 </div>
-                <div className="text-[10px] mt-0.5" style={{ color: 'var(--text-muted)' }}>{preset.output.name}</div>
+                <div className="text-xs text-muted">{preset.output.name}</div>
               </div>
             )}
 
-            {/* Active rules */}
+            {/* Active rules list on Steps 2-4 */}
             {currentStep >= 2 && pipeline && (
-              <div className="mb-4">
-                <div className="text-[9px] uppercase tracking-wider mb-2 font-bold" style={{ color: 'var(--text-muted)' }}>Active Rules</div>
-                <div className="space-y-1">
+              <div className="space-y-2">
+                <div className="text-xs uppercase tracking-wider font-semibold text-muted">
+                  Active Rules Firing
+                </div>
+                <div className="space-y-1.5">
                   {pipeline.evaluatedRules
-                    .map((r, i) => ({ ...r, oi: i }))
-                    .filter(r => r.firingStrength > 0)
-                    .map(r => (
-                      <div key={r.oi} className="flex items-center gap-2 text-[10px] rounded px-2 py-1"
-                        style={{ background: 'var(--bg-raised)', border: '1px solid var(--border)' }}>
-                        <span className="font-mono" style={{ color: 'var(--text-muted)' }}>R{r.oi + 1}</span>
-                        <span className="flex-1 truncate" style={{ color: 'var(--text-secondary)' }}>{r.antecedents.join(' ∧ ')}</span>
-                        <span className="font-mono font-bold" style={{ color: 'var(--accent)' }}>{r.firingStrength.toFixed(3)}</span>
+                    .map((r, i) => ({ ...r, originalIndex: i }))
+                    .filter((r) => r.firingStrength > 0)
+                    .map((r) => (
+                      <div
+                        key={r.originalIndex}
+                        className="flex items-center justify-between text-xs p-2 rounded-[6px] bg-panel border border-line"
+                      >
+                        <span className="font-mono text-ink">
+                          Rule {r.originalIndex + 1}
+                        </span>
+                        <span className="font-mono tabular-nums text-accent">
+                          w = {r.firingStrength.toFixed(3)}
+                        </span>
                       </div>
                     ))}
                 </div>
@@ -82,40 +105,94 @@ export default function ExplanationPanel({ stepInfo, currentStep, handCalc, pres
         </AnimatePresence>
       </div>
 
-      {/* ── Hand Calc toggle ── */}
-      <div style={{ borderTop: '1px solid var(--border)' }}>
-        <button onClick={() => setShowCalc(!showCalc)}
-          className="w-full flex items-center justify-between px-4 py-2 text-[11px] font-medium transition-colors"
-          style={{ color: showCalc ? 'var(--accent)' : 'var(--text-muted)', background: showCalc ? 'var(--accent-bg)' : 'transparent' }}>
-          <span>📐 Hand Calculation Verification</span>
-          <span style={{ transform: showCalc ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>▾</span>
+      {/* Hand calculation verification accordion */}
+      <footer className="border-t border-line">
+        <button
+          onClick={() => setShowCalc(!showCalc)}
+          aria-expanded={showCalc}
+          className="w-full min-h-[44px] px-4 py-3 flex items-center justify-between text-left text-xs font-semibold text-ink hover:bg-panel-hover transition-colors focus-visible:outline-2 focus-visible:outline-accent"
+        >
+          <span>Hand Calculation Ledger</span>
+          <Icon
+            name={showCalc ? 'chevronUp' : 'chevronDown'}
+            className="w-4 h-4 text-muted"
+          />
         </button>
+
         <AnimatePresence>
           {showCalc && (
-            <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }}
-              transition={{ duration: 0.2 }} className="overflow-hidden">
-              <div className="px-4 pb-3 max-h-56 overflow-y-auto" style={{ borderTop: '1px solid var(--border)' }}>
-                {handCalc.map((line, i) => <CalcLine key={i} line={line} />)}
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="overflow-hidden"
+            >
+              <div className="p-4 max-h-64 overflow-y-auto border-t border-line bg-panel space-y-1">
+                {handCalc.map((line, idx) => (
+                  <LedgerLine key={idx} line={line} />
+                ))}
               </div>
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
+      </footer>
     </div>
   );
 }
 
-function CalcLine({ line }) {
-  const styles = {
-    header: { fontSize: 11, fontWeight: 700, color: 'var(--text-secondary)', marginBottom: 6 },
-    subheader: { fontSize: 10, fontWeight: 600, color: 'var(--accent)', marginTop: 10, marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.05em' },
-    label: { fontSize: 10, fontWeight: 500, color: 'var(--text-secondary)', marginTop: 6, marginBottom: 2 },
-    calc: { fontSize: 10, fontFamily: 'var(--font-mono)', color: line.highlight ? 'var(--accent)' : 'var(--text-muted)', lineHeight: 1.6 },
-    formula: { fontSize: 10, fontFamily: 'var(--font-mono)', color: 'var(--purple)', marginTop: 4 },
-    result: { fontSize: 11, fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--green)', marginTop: 4 },
-    muted: { fontSize: 9, color: 'var(--text-muted)', fontStyle: 'italic', marginTop: 2 },
-    divider: {},
-  };
-  if (line.type === 'divider') return <div className="my-2" style={{ height: 1, background: 'var(--border)' }} />;
-  return <div style={styles[line.type] || styles.calc}>{line.text}</div>;
+function LedgerLine({ line }) {
+  if (line.type === 'divider') {
+    return <div className="my-2 h-px bg-line" />;
+  }
+
+  if (line.type === 'header') {
+    return (
+      <div className="text-xs font-bold text-ink mb-1">
+        {line.text}
+      </div>
+    );
+  }
+
+  if (line.type === 'subheader') {
+    return (
+      <div className="text-xs font-semibold text-accent uppercase tracking-wider mt-2 mb-1">
+        {line.text}
+      </div>
+    );
+  }
+
+  if (line.type === 'label') {
+    return (
+      <div className="text-xs font-medium text-ink">
+        {line.text}
+      </div>
+    );
+  }
+
+  if (line.type === 'formula') {
+    return (
+      <div className="text-xs font-mono text-accent py-0.5">
+        {line.text}
+      </div>
+    );
+  }
+
+  if (line.type === 'result') {
+    return (
+      <div className="text-xs font-mono tabular-nums font-bold text-accent pt-1">
+        {line.text}
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className={`text-xs font-mono tabular-nums leading-relaxed ${
+        line.highlight ? 'text-accent' : 'text-muted'
+      }`}
+    >
+      {line.text}
+    </div>
+  );
 }
